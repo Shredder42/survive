@@ -18,7 +18,7 @@ class Tile:
     def show(self):
         print(self.color, self.coordinates, self.backside, self.outline, self.sunk)
 
-class Deck:
+class Island:
     def __init__(self):
         self.tiles = []
         self.beach_brown = (255, 218, 180)
@@ -118,11 +118,4 @@ class Deck:
         self.tiles.append(Tile(self.rocky_gray, self._select_coordinates(), 'remove shark', 'red'))
 
 
-    # def show(self):
-    #     for t in self.tiles:
-    #         t.show()
-
-# deck = Deck()
-# deck.show()
-# print(len(deck.coordinates))
 

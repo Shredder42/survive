@@ -1,7 +1,7 @@
 import pygame
 import math
 from random import choice
-from tiles import Deck
+from tiles import Island
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1350, 1200
 OCEAN_BLUE = (43, 101, 236)
@@ -10,7 +10,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 screen.fill(OCEAN_BLUE)
 pygame.display.set_caption("SURVIVE! Game Board")
 
-island = Deck()
+island = Island()
 
 def main():
     run = True
@@ -32,7 +32,6 @@ def main():
                 break
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print(pygame.mouse.get_pos())
                 pos = pygame.mouse.get_pos()
 
                 for tile, rect in tile_rects:
@@ -48,5 +47,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # print(island_tiles)
-    # print(len(island_tiles))
+

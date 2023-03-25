@@ -2,6 +2,8 @@ import pygame
 import math
 from random import choice
 from tiles import Island
+import animals
+
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1350, 1200
 OCEAN_BLUE = (43, 101, 236)
@@ -39,6 +41,13 @@ def main():
                         print(tile.backside)
                         tile.sunk = True
                         pygame.draw.polygon(screen, OCEAN_BLUE, tile.coordinates)
+                        if tile.backside =='add whale':
+                            whale = animals.Whale((rect.left + 15, rect.top + 15))
+                            whale.draw(screen)
+                        if tile.backside =='add shark':
+                            shark = animals.Shark((rect.left + 15, rect.top + 15))
+                            shark.draw(screen)
+
 
 
         pygame.display.update()

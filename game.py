@@ -11,24 +11,20 @@ screen.fill(OCEAN_BLUE)
 pygame.display.set_caption("SURVIVE! Game Board")
 
 island = Deck()
-print(type(island))
-island_tiles = []
-for tile in island.tiles:
-    island_tiles.append((tile.color, tile.coordinates))
-
-
-def draw_tiles(surface, island_tiles):
-    for tile in island_tiles:
-        pygame.draw.polygon(surface, tile[0], tile[1])
 
 def main():
     run = True
-    sunk = False
 
     while run:
 
-        if not sunk:
-            draw_tiles(screen, island_tiles)
+        rects = []
+        drawn_tiles = []
+        for tile in island.tiles:
+            if not tile.sunk:
+                rects.append(tile.draw(screen))
+                drawn_tiles.append(tile)
+
+        tile_rects = zip(drawn_tiles, rects)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -36,9 +32,14 @@ def main():
                 break
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                sunk = True
-                # drawRegularPolygon(screen, OCEAN_BLUE, 6, 0, 500, 500, 50)
                 print(pygame.mouse.get_pos())
+                pos = pygame.mouse.get_pos()
+
+                for tile, rect in tile_rects:
+                    if rect.collidepoint((pos)):
+                        print(tile.backside)
+                        tile.sunk = True
+                        pygame.draw.polygon(screen, OCEAN_BLUE, tile.coordinates)
 
 
         pygame.display.update()
@@ -47,3 +48,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # print(island_tiles)
+    # print(len(island_tiles))

@@ -1,5 +1,7 @@
 import math
 from random import choice
+import pygame
+
 
 
 class Tile:
@@ -9,6 +11,9 @@ class Tile:
         self.backside = backside
         self.outline = outline
         self.sunk = False
+
+    def draw(self, surface):
+            return pygame.draw.polygon(surface, self.color, self.coordinates)
 
     def show(self):
         print(self.color, self.coordinates, self.backside, self.outline, self.sunk)
@@ -113,11 +118,11 @@ class Deck:
         self.tiles.append(Tile(self.rocky_gray, self._select_coordinates(), 'remove shark', 'red'))
 
 
-    def show(self):
-        for t in self.tiles:
-            t.show()
+    # def show(self):
+    #     for t in self.tiles:
+    #         t.show()
 
-deck = Deck()
-deck.show()
-print(len(deck.coordinates))
+# deck = Deck()
+# deck.show()
+# print(len(deck.coordinates))
 

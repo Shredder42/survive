@@ -2,6 +2,7 @@ import pygame
 import math
 from random import choice
 from tiles import Island
+from tiles import Ocean
 import animals
 
 
@@ -13,6 +14,7 @@ screen.fill(OCEAN_BLUE)
 pygame.display.set_caption("SURVIVE! Game Board")
 
 island = Island()
+ocean = Ocean()
 
 def main():
     run = True
@@ -27,6 +29,9 @@ def main():
                 drawn_tiles.append(tile)
 
         tile_rects = zip(drawn_tiles, rects)
+
+        for tile in ocean.tiles:
+            tile.draw(screen, width= 1)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

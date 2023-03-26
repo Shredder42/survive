@@ -17,7 +17,7 @@ class Whale:
 
 class Shark:
     def __init__(self, coordinates):
-        self.movement = 3
+        self.movement = 2
         self.action = 'eat swimmers'
         self.coordinates = coordinates
         self.image = self.load_image()

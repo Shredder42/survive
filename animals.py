@@ -6,6 +6,7 @@ class Whale:
         self.action = 'capsize boat'
         self.coordinates = coordinates
         self.image = self.load_image()
+        self.rect = self.image.get_rect() # new, see if this works
 
     def load_image(self):
         image = pygame.image.load('whale.png').convert_alpha()
@@ -13,7 +14,10 @@ class Whale:
         return image
 
     def draw(self, surface):
-        surface.blit(self.image, self.coordinates)
+        return surface.blit(self.image, self.coordinates)
+
+    # def get_rect(self):
+    #     return self.image.get_rect()
 
 class Shark:
     def __init__(self, coordinates):

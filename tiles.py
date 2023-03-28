@@ -169,9 +169,9 @@ class Ocean():
                 for i in range(10, ocean_row):
                     self.coordinates.append(self._tile_specs(6, math.pi / 6, self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist * 3, self.radius))
             elif idx == 8:
-                for i in range(2):
+                for i in range(3):
                     self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 4, self.radius))
-                for i in range(10, ocean_row):
+                for i in range(8, ocean_row):
                     self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 4, self.radius))
             elif idx == 9:
                 for i in range(3):

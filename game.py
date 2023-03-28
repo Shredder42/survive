@@ -1,9 +1,7 @@
 import pygame
 import math
 from random import choice
-from tiles import Island
-from tiles import Ocean
-from tiles import Tile
+from tiles import Island, Ocean, Tile
 import animals
 
 
@@ -17,6 +15,8 @@ pygame.display.set_caption("SURVIVE! Game Board")
 
 island = Island()
 ocean = Ocean()
+whales = []
+whale_rects = []
 
 def main():
     run = True
@@ -38,6 +38,7 @@ def main():
 
         island_tile_rects = zip(island_drawn_tiles, island_rects)
 
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -53,12 +54,16 @@ def main():
                         pygame.draw.polygon(screen, OCEAN_BLUE, island_tile.coordinates) # why do I need this?
                         ocean.tiles.append(Tile(BLACK, island_tile.coordinates))
                         if island_tile.backside == 'add whale':
-                            whale = animals.Whale((island_rect.left + 15, island_rect.top + 15))
-                            whale.draw(screen)
-                        if island_tile.backside == 'add shark':
+                            whales.append(animals.Whale((island_rect.left + 15, island_rect.top + 15)))
+                            whale_rects.append(whales[-1].draw(screen))
+                        elif island_tile.backside == 'add shark':
                             shark = animals.Shark((island_rect.left + 15, island_rect.top + 15))
                             shark.draw(screen)
 
+
+                for whale_rect in whale_rects:
+                    if whale_rect.collidepoint(pos):
+                        print('whale selected')
 
 
         pygame.display.update()
@@ -66,6 +71,8 @@ def main():
     pygame.quit()
     print(len(ocean_drawn_tiles))
     print(len(island_drawn_tiles))
+    for whale in whales:
+        print(whale.get_rect())
 
 if __name__ == '__main__':
     main()

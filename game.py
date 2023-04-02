@@ -31,15 +31,18 @@ whale = animals.Whale()
 
 whales = [animals.Whale() for i in range(5)]
 whale_rects = island.return_tile_coords()[0]
-# sharks = [animals.Shark() for i in range(6)]
-# shark_rects = island.return_tile_coords()[1]
+sharks = [animals.Shark() for i in range(6)]
+shark_rects = island.return_tile_coords()[1]
+animals = whales + sharks
+animal_rects = whale_rects + shark_rects
+print(animals)
 
 idx = 0
-for item in whales:
-    item.rect.x, item.rect.y = whale_rects[idx][0], whale_rects[idx][1]
+for animal in animals:
+    animal.rect.x, animal.rect.y = animal_rects[idx][0], animal_rects[idx][1]
     idx += 1
 
-    print(item.rect)
+    # print(item.rect)
 
 # moving = False
 def main():
@@ -56,8 +59,8 @@ def main():
 
         screen.fill(OCEAN_BLUE)
         # whales[0].draw(screen, whales[0].rect)
-        for whale in whales:
-            whale.draw(screen, whale.rect)
+        for animal in animals:
+            animal.draw(screen, animal.rect)
         # for shark in sharks:
         #     shark.draw(screen, shark.rect)
 
@@ -121,14 +124,11 @@ def main():
                 #     moving = True
                 #     print('whale 0 selected')
 
-                whale_idx = None
-                for idx, item in enumerate(whales):
+                animal_idx = None
+                for idx, item in enumerate(animals):
                     if item.rect.collidepoint(pos):
                         moving = True
-                        whale_idx = idx
-                        print(f'whale {idx} selected')
-                        print(moving)
-                        # break
+                        animal_idx = idx
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 moving = False
@@ -136,7 +136,7 @@ def main():
 
             elif event.type == pygame.MOUSEMOTION and moving:
                 # whale.rect.move_ip(event.rel)
-                whales[whale_idx].rect.move_ip(event.rel)
+                animals[animal_idx].rect.move_ip(event.rel)
 
         # whale.draw(screen, whale.rect)
 

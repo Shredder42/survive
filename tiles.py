@@ -121,11 +121,13 @@ class Island:
         shark_tile_coords =[]
         for tile in self.tiles:
             if tile.backside == 'add whale':
-                whale_tile_coords.append((tile.coordinates[4][0] + 20, tile.coordinates[4][1]))
+                whale_tile_coords.append((tile.coordinates[4][0] + 20, tile.coordinates[4][1] - 5))
             if tile.backside == 'add shark':
-                shark_tile_coords.append((tile.coordinates[4][0], + 20, tile.coordinates[4][1]))
+                shark_tile_coords.append((tile.coordinates[4][0] + 10, tile.coordinates[4][1] - 10))
             # print(item.coordinates)
             # print((item.coordinates[-1][0], item.coordinates[-1][1] + 50))
+        # print(whale_tile_coords)S
+        # print(shark_tile_coords)
         return whale_tile_coords, shark_tile_coords
 
 

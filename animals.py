@@ -30,11 +30,12 @@ class Whale:
     #     return self.image.get_rect()
 
 class Shark:
-    def __init__(self, coordinates):
+    def __init__(self):
         self.movement = 2
         self.action = 'eat swimmers'
-        self.coordinates = coordinates
+        # self.coordinates = coordinates
         self.image = self.load_image()
+        self.rect = self.image.get_rect()
 
     def load_image(self):
         image = pygame.image.load('sharkfin2.png').convert_alpha()

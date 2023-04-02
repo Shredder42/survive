@@ -1,20 +1,30 @@
 import pygame
+# import game
+import tiles
 
 class Whale:
-    def __init__(self, coordinates):
+    def __init__(self):
         self.movement = 3
         self.action = 'capsize boat'
-        self.coordinates = coordinates
+        # self.coordinates = coordinates
         self.image = self.load_image()
-        self.rect = self.image.get_rect() # new, see if this works
+        self.selected = False
+        self.rect = self.image.get_rect()
 
     def load_image(self):
         image = pygame.image.load('whale.png').convert_alpha()
         image = pygame.transform.scale(image, (50, 50))
         return image
 
-    def draw(self, surface):
-        return surface.blit(self.image, self.coordinates)
+    def draw(self, surface, coords):
+        self.rect.x = coords[0]
+        self.rect.y = coords[1]
+        return surface.blit(self.image, coords)
+
+    def show_selected(self):
+        return self.selected
+
+
 
     # def get_rect(self):
     #     return self.image.get_rect()
@@ -31,8 +41,10 @@ class Shark:
         image = pygame.transform.scale(image, (70, 70))
         return image
 
-    def draw(self, surface):
-        surface.blit(self.image, self.coordinates)
+    def draw(self, surface, coords):
+        self.rect.x = coords[0]
+        self.rect.y = coords[1]
+        return surface.blit(self.image, coords)
 
 
 

@@ -116,6 +116,19 @@ class Island:
         self.tiles.append(Tile(self.rocky_gray, self._select_coordinates(), 'remove whale', 'red'))
         self.tiles.append(Tile(self.rocky_gray, self._select_coordinates(), 'remove shark', 'red'))
 
+    def return_tile_coords(self):
+        whale_tile_coords = []
+        shark_tile_coords =[]
+        for tile in self.tiles:
+            if tile.backside == 'add whale':
+                whale_tile_coords.append((tile.coordinates[4][0] + 20, tile.coordinates[4][1]))
+            if tile.backside == 'add shark':
+                shark_tile_coords.append((tile.coordinates[4][0], + 20, tile.coordinates[4][1]))
+            # print(item.coordinates)
+            # print((item.coordinates[-1][0], item.coordinates[-1][1] + 50))
+        return whale_tile_coords, shark_tile_coords
+
+
 class Ocean():
     def __init__(self):
         self.ocean_rows = [7, 10, 11, 10, 11, 12, 11, 12, 11, 10, 11, 10, 7]
@@ -204,6 +217,8 @@ class Ocean():
         for coord in self.coordinates:
             self.tiles.append(Tile(self.black, coord))
 
+island = Island()
+island.return_tile_coords()
     # def _tile_specs(self, num_sides, tilt_angle, x, y, radius):
     #     pts = []
     #     for i in range(num_sides):

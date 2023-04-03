@@ -51,27 +51,27 @@ class Island:
         for idx, island_row in enumerate(self.island_rows):
             if idx == 0:
                 for i in range(island_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 5 * self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 5 * self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist, self.radius))
             elif idx == 1:
                 for i in range(island_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 4.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 2, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 4.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist * 2, self.radius))
             elif idx == 2:
                 for i in range(island_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3 * self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist * 2, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3 * self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist * 2, self.radius))
             elif idx == 3:
                 for i in range(3): # open space in middle
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 3, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist * 3, self.radius))
                 for i in range(4, island_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 3, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist * 3, self.radius))
             elif idx == 4:
                 for i in range(island_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3 * self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist * 3, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3 * self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist * 3, self.radius))
             elif idx == 5:
                 for i in range(island_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 4.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 4, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 4.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist * 4, self.radius))
             else:
                 for i in range(island_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 5 * self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist * 4, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 5 * self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist * 4, self.radius))
 
     def _select_coordinates(self):
         coord = choice(self.coordinates)
@@ -151,57 +151,57 @@ class Ocean():
         for idx, ocean_row in enumerate(self.ocean_rows):
             if idx == 0:
                 for i in range(ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3.5 * self.tile_width + i * self.tile_width, 25, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3.5 * self.tile_width + i * self.tile_width, 10, self.radius))
             elif idx == 1:
                 for i in range(ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 100, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 85, self.radius))
             elif idx == 2:
                 for i in range(ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist, self.radius))
             elif idx == 3:
                 for i in range(3):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist, self.radius))
                 for i in range(7, ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist, self.radius))
             elif idx == 4:
                 for i in range(3):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 2, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist * 2, self.radius))
                 for i in range(8, ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 2, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist * 2, self.radius))
             elif idx == 5:
                 for i in range(2):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist * 2, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist * 2, self.radius))
                 for i in range(10, ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist * 2, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist * 2, self.radius))
             elif idx == 6: # maybe need to insert the middle space in here
                 for i in range(2):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 3, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist * 3, self.radius))
                 for i in range(10, ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 3, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist * 3, self.radius))
             elif idx == 7:
                 for i in range(2):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist * 3, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist * 3, self.radius))
                 for i in range(10, ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist * 3, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist * 3, self.radius))
             elif idx == 8:
                 for i in range(3):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 4, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist * 4, self.radius))
                 for i in range(8, ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 4, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist * 4, self.radius))
             elif idx == 9:
                 for i in range(3):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist * 4, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist * 4, self.radius))
                 for i in range(7, ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist * 4, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist * 4, self.radius))
             elif idx == 10:
                 for i in range(ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 25 + self.tile_tip_dist * 5, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 1.5 * self.tile_width + i * self.tile_width, 10 + self.tile_tip_dist * 5, self.radius))
             elif idx == 11:
                 for i in range(ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 100 + self.tile_tip_dist * 5, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 2 * self.tile_width + i * self.tile_width, 85 + self.tile_tip_dist * 5, self.radius))
             elif idx == 12:
                 for i in range(ocean_row):
-                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3.5 * self.tile_width + i * self.tile_width, 25 +  self.tile_tip_dist * 6, self.radius))
+                    self.coordinates.append(self._tile_specs(6, math.pi / 6, 3.5 * self.tile_width + i * self.tile_width, 10 +  self.tile_tip_dist * 6, self.radius))
 
 
 

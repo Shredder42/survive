@@ -25,10 +25,6 @@ class Whale:
         return self.selected
 
 
-
-    # def get_rect(self):
-    #     return self.image.get_rect()
-
 class Shark:
     def __init__(self):
         self.movement = 2
@@ -46,6 +42,25 @@ class Shark:
         self.rect.x = coords[0]
         self.rect.y = coords[1]
         return surface.blit(self.image, coords)
+
+class Serpent:
+    def __init__(self):
+        self.movement = 1
+        self.action = 'capsize boat & eat swimmers'
+        self.image = self.load_image()
+        self.rect = self.image.get_rect()
+
+    def load_image(self):
+        image = pygame.image.load('sea_serpent.png').convert_alpha()
+        image = pygame.transform.scale(image, (50, 50))
+        return image
+
+    def draw(self, surface, coords):
+        self.rect.x = coords[0]
+        self.rect.y = coords[1]
+        return surface.blit(self.image, coords)
+
+
 
 
 

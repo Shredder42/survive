@@ -14,7 +14,7 @@ BLACK = (0, 0, 0)
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 # screen.fill(OCEAN_BLUE)
-pygame.display.set_caption("SURVIVE! Game Board")
+pygame.display.set_caption("SURVIVE!")
 
 def draw_tile(surface, num_sides, tilt_angle, x, y, radius, color):
     pts = []
@@ -33,20 +33,48 @@ whales = [animals.Whale() for i in range(5)]
 whale_rects = island.return_tile_coords()[0]
 sharks = [animals.Shark() for i in range(6)]
 shark_rects = island.return_tile_coords()[1]
-animals = whales + sharks
-animal_rects = whale_rects + shark_rects
-print(animals)
+serpents = [animals.Serpent() for i in range(5)]
+# serpent = [animals.Serpent()]
+serpents[0].rect.x = 150
+serpents[0].rect.y = 105
+serpents[1].rect.x = 975
+serpents[1].rect.y = 180
+serpents[2].rect.x = 540
+serpents[2].rect.y = 480
+serpents[3].rect.x = 110
+serpents[3].rect.y = 780
+serpents[4].rect.x = 935
+serpents[4].rect.y = 855
+serpent_rects = []
+for idx, serpent in enumerate(serpents):
+    serpent_rects.append(serpent.rect)
+    # print(serpent.rect)
+# print(serpents)
+# print(serpent_rects)
+animals = whales + sharks + serpents
+animal_rects = whale_rects + shark_rects + serpent_rects
+# print(animals)
 
-idx = 0
-for animal in animals:
+for idx, animal in enumerate(animals):
     animal.rect.x, animal.rect.y = animal_rects[idx][0], animal_rects[idx][1]
-    idx += 1
 
-    # print(item.rect)
+game_pieces = pygame.image.load('game_pieces.png').convert_alpha()
+game_pieces = pygame.transform.scale(game_pieces, (100, 50))
+red_piece = game_pieces.subsurface(0, 0, 20, 50)
+red_rect = red_piece.get_rect()
+red_rect.x = 500
+red_rect.y = 500
+print(red_rect)
+yellow_piece = game_pieces.subsurface(20, 0, 20, 50)
+yellow_rect = yellow_piece.get_rect()
+yellow_rect.x = 700
+yellow_rect.y = 700
+print(yellow_rect)
 
 # moving = False
 def main():
 
+    moving_red = False
     moving = False
     run = True
 
@@ -90,6 +118,7 @@ def main():
 
         island_tile_rects = zip(island_drawn_tiles, island_rects)
 
+        screen.blit(red_piece, red_rect)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -103,7 +132,7 @@ def main():
                     if island_rect.collidepoint((pos)):
                         print(island_tile.backside)
                         island_tile.sunk = True
-                        pygame.draw.polygon(screen, OCEAN_BLUE, island_tile.coordinates) # why do I need this?
+                        # pygame.draw.polygon(screen, OCEAN_BLUE, island_tile.coordinates) # why do I need this?
                         ocean.tiles.append(Tile(BLACK, island_tile.coordinates))
                         # if island_tile.backside == 'add whale':
                         #     whale.draw(screen, (island_rect.left + 15, island_rect.top + 15))
@@ -130,13 +159,19 @@ def main():
                         moving = True
                         animal_idx = idx
 
+                if red_rect.collidepoint(pos):
+                    moving_red = True
+
             elif event.type == pygame.MOUSEBUTTONUP:
                 moving = False
+                moving_red = False
                 # print(moving)
 
             elif event.type == pygame.MOUSEMOTION and moving:
                 # whale.rect.move_ip(event.rel)
                 animals[animal_idx].rect.move_ip(event.rel)
+            elif event.type == pygame.MOUSEMOTION and moving_red:
+                red_rect.move_ip(event.rel)
 
         # whale.draw(screen, whale.rect)
 
@@ -150,7 +185,6 @@ def main():
     pygame.quit()
     print(len(ocean_drawn_tiles))
     print(len(island_drawn_tiles))
-    print(whales)
 
 if __name__ == '__main__':
     main()

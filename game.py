@@ -2,6 +2,7 @@ import pygame
 import math
 from random import choice
 from tiles import Island, Ocean, Tile
+from game_pieces import GamePiece
 import animals
 
 pygame.init()
@@ -61,6 +62,7 @@ for idx, animal in enumerate(animals):
 game_pieces = pygame.image.load('game_pieces.png').convert_alpha()
 game_pieces = pygame.transform.scale(game_pieces, (100, 50))
 red_piece = game_pieces.subsurface(0, 0, 20, 50)
+# pygame.image.save(red_piece, 'red_piece.png')
 red_rect = red_piece.get_rect()
 red_rect.x = 500
 red_rect.y = 500
@@ -71,10 +73,18 @@ yellow_rect.x = 700
 yellow_rect.y = 700
 print(yellow_rect)
 
+# red_game_piece = GamePiece('red', 6)
+# print(red_game_piece.rect)
+# red_game_piece.rect.x = 800
+# red_game_piece.rect.y = 800
+# print(red_game_piece.rect)
+
 # moving = False
 def main():
 
+    draw_red = True
     moving_red = False
+    moving_yellow = False
     moving = False
     run = True
 
@@ -118,7 +128,10 @@ def main():
 
         island_tile_rects = zip(island_drawn_tiles, island_rects)
 
-        screen.blit(red_piece, red_rect)
+        if draw_red:
+            screen.blit(red_piece, red_rect)
+            # red_game_piece.draw(screen, red_game_piece.rect)
+        screen.blit(yellow_piece, yellow_rect)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -144,8 +157,8 @@ def main():
                 # whale.selected = False
                 # print(whale.selected)
 
-                if whale.rect.collidepoint(pos):
-                    moving = True
+                # if whale.rect.collidepoint(pos):
+                #     moving = True
                     # whale.selected = True
                     # print(whale.selected)
 
@@ -154,24 +167,35 @@ def main():
                 #     print('whale 0 selected')
 
                 animal_idx = None
-                for idx, item in enumerate(animals):
-                    if item.rect.collidepoint(pos):
+                for idx, animal in enumerate(animals):
+                    if animal.rect.collidepoint(pos):
                         moving = True
                         animal_idx = idx
 
                 if red_rect.collidepoint(pos):
                     moving_red = True
+                if yellow_rect.collidepoint(pos):
+                    moving_yellow = True
+
+
+            elif event.type == pygame.MOUSEMOTION:
+                if moving:
+                    animals[animal_idx].rect.move_ip(event.rel)
+                elif moving_red:
+                    red_rect.move_ip(event.rel)
+                elif moving_yellow:
+                    yellow_rect.move_ip(event.rel)
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 moving = False
                 moving_red = False
+                moving_yellow = False
                 # print(moving)
 
-            elif event.type == pygame.MOUSEMOTION and moving:
-                # whale.rect.move_ip(event.rel)
-                animals[animal_idx].rect.move_ip(event.rel)
-            elif event.type == pygame.MOUSEMOTION and moving_red:
-                red_rect.move_ip(event.rel)
+        for animal in animals:
+            if pygame.Rect.colliderect(red_rect, animal.rect) and not moving_red:
+                draw_red = False
+
 
         # whale.draw(screen, whale.rect)
 

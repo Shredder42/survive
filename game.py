@@ -26,6 +26,11 @@ def draw_tile(surface, num_sides, tilt_angle, x, y, radius, color):
 
 island = Island()
 ocean = Ocean()
+red_piece = GamePiece('red', 6, 'red_piece.png')
+print(red_piece.rect)
+red_piece.rect.x = 400
+red_piece.rect.y = 800
+print(red_piece.rect)
 
 # def create_animals(animal, num_of_animals, island, initial_rects = None):
 #         return [animals.animal for i in range(num_of_animals)], island.return_tile_coords() [0]

@@ -10,24 +10,25 @@ def create_game_pieces(color, left):
 
 
 class GamePiece:
-    def __init__(self, color, value):
+    def __init__(self, color, value, png):
         self.color = color
         self.value = value
         self.swimming = False
         self.boat = False
         self.safe = False
-        # self.rect = create_game_pieces('game_pieces.png')
+        self.png = png
+        self.image = self.load_image()
+        self.rect = self.image.get_rect()
 
-
-    # def load_image(self):
-    #     image = pygame.image.load('.png').convert_alpha()
-    #     image = pygame.transform.scale(image, (50, 50))
-    #     return image
+    def load_image(self):
+        image = pygame.image.load(self.png).convert_alpha()
+        image = pygame.transform.scale(image, (50, 50))
+        return image
 
     def draw(self, surface, coords):
         self.rect.x = coords[0]
         self.rect.y = coords[1]
         return surface.blit(self.image, coords)
 
-# red_piece = GamePiece('red', 6)
+# red_piece = GamePiece('red', 6, 'red_piece.png')
 # print(red_piece.rect)

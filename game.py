@@ -2,7 +2,7 @@ import pygame
 import math
 from random import choice
 from tiles import Island, Ocean, Tile
-from game_pieces import GamePiece
+from game_pieces import GamePiece, create_game_pieces
 import animals
 
 pygame.init()
@@ -14,7 +14,6 @@ RED = (255, 0, 0)
 BLACK = (0, 0, 0)
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-# screen.fill(OCEAN_BLUE)
 pygame.display.set_caption("SURVIVE!")
 
 def draw_tile(surface, num_sides, tilt_angle, x, y, radius, color):
@@ -28,36 +27,37 @@ def draw_tile(surface, num_sides, tilt_angle, x, y, radius, color):
 island = Island()
 ocean = Ocean()
 
-whale = animals.Whale()
+# def create_animals(animal, num_of_animals, island, initial_rects = None):
+#         return [animals.animal for i in range(num_of_animals)], island.return_tile_coords() [0]
 
+# whales = create_animals(Whale(), 5, island)[0]
 whales = [animals.Whale() for i in range(5)]
 whale_rects = island.return_tile_coords()[0]
 sharks = [animals.Shark() for i in range(6)]
 shark_rects = island.return_tile_coords()[1]
 serpents = [animals.Serpent() for i in range(5)]
-# serpent = [animals.Serpent()]
-serpents[0].rect.x = 150
-serpents[0].rect.y = 105
-serpents[1].rect.x = 975
-serpents[1].rect.y = 180
-serpents[2].rect.x = 540
-serpents[2].rect.y = 480
-serpents[3].rect.x = 110
-serpents[3].rect.y = 780
-serpents[4].rect.x = 935
-serpents[4].rect.y = 855
-serpent_rects = []
-for idx, serpent in enumerate(serpents):
-    serpent_rects.append(serpent.rect)
-    # print(serpent.rect)
-# print(serpents)
-# print(serpent_rects)
+serpent_initial_rects = [(150, 105), (975, 180), (540, 480), (110, 780), (935, 855)]
+
+def set_initial_serpent_rects(serpents, serpent_initial_rects):
+    serpent_rects = []
+    for idx, serpent in enumerate(serpents):
+        serpent.rect.x = serpent_initial_rects[idx][0]
+        serpent.rect.y = serpent_initial_rects[idx][1]
+        serpent_rects.append(serpent.rect)
+    return serpent_rects
+serpent_rects = set_initial_serpent_rects(serpents, serpent_initial_rects)
+
 animals = whales + sharks + serpents
 animal_rects = whale_rects + shark_rects + serpent_rects
 # print(animals)
 
 for idx, animal in enumerate(animals):
     animal.rect.x, animal.rect.y = animal_rects[idx][0], animal_rects[idx][1]
+
+# create_game_pieces('red', 0)
+# create_game_pieces('yellow', 20)
+# create_game_pieces('green', 40)
+# create_game_pieces('blue', 60)
 
 game_pieces = pygame.image.load('game_pieces.png').convert_alpha()
 game_pieces = pygame.transform.scale(game_pieces, (100, 50))

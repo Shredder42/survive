@@ -1,14 +1,12 @@
 import pygame
 
 
-
-# def create_game_pieces(image):
-#     game_pieces = pygame.image.load(image).convert_alpha()
-#     game_pieces = pygame.transform.scale(game_pieces, (100, 50))
-#     red_piece = game_pieces.subsurface(0, 0, 20, 50)
-#     return red_piece
-
-# create_game_pieces('game_pieces.png')
+def create_game_pieces(color, left):
+    game_pieces = pygame.image.load('game_pieces.png').convert_alpha()
+    game_pieces = pygame.transform.scale(game_pieces, (100, 50))
+    piece_png = game_pieces.subsurface(left, 0, 20, 50)
+    title = f'{color}_piece.png'
+    pygame.image.save(piece_png, title)
 
 
 class GamePiece:

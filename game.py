@@ -26,11 +26,6 @@ def draw_tile(surface, num_sides, tilt_angle, x, y, radius, color):
 
 island = Island()
 ocean = Ocean()
-red_piece = GamePiece('red', 6, 'red_piece.png', 400, 800)
-# print(red_piece.rect)
-# red_piece.rect.x = 400
-# red_piece.rect.y = 800
-print(red_piece.rect)
 
 def make_pieces(color, png, start_x, start_y):
     pieces = []
@@ -56,11 +51,15 @@ def make_pieces(color, png, start_x, start_y):
 
 
 red_pieces = make_pieces('red', 'red_piece.png', 1200, 50)
-print(red_pieces)
-for x in red_pieces:
-    print(x.rect)
-print(len(red_pieces))
-yellow_piece = GamePiece('yellow', 6, 'yellow_piece.png', 600, 500)
+yellow_pieces = make_pieces('yellow', 'yellow_piece.png', 1200, 150)
+blue_pieces = make_pieces('blue', 'blue_piece.png', 1200, 250)
+green_pieces = make_pieces('green', 'green_piece.png', 1200, 350)
+
+# print(red_pieces)
+# for x in red_pieces:
+#     print(x.rect)
+# print(len(red_pieces))
+# yellow_piece = GamePiece('yellow', 6, 'yellow_piece.png', 600, 500)
 # yellow_piece.rect.x = 600
 # yellow_piece.rect.y = 500
 
@@ -91,6 +90,35 @@ animal_rects = whale_rects + shark_rects + serpent_rects
 for idx, animal in enumerate(animals):
     animal.rect.x, animal.rect.y = animal_rects[idx][0], animal_rects[idx][1]
 
+def draw_pieces(pieces):
+    for piece in pieces:
+        if piece.alive:
+            piece.draw(screen, piece.rect)
+
+def clicked_pieces(pieces, mouse_position):
+    moving_piece = False
+    for idx, piece in enumerate(pieces):
+        if piece.rect.collidepoint(mouse_position):
+            moving_piece = True
+            break
+    return moving_piece, idx
+
+def determine_moving_piece(moving, pieces, index, event):
+    if moving:
+        pieces[index].rect.move_ip(event.rel)
+
+def stop_moving_piece(moving_piece):
+    moving_piece = False
+    return moving_piece
+
+def eat_swimmers(moving, pieces, index, animal):
+    if index == None:
+        pass
+    else:
+        if pygame.Rect.colliderect(pieces[index].rect, animal.rect) and not moving:
+            pieces[index].alive = False
+    # return pieces[idx].alive
+
 # create_game_pieces('red', 0)
 # create_game_pieces('yellow', 20)
 # create_game_pieces('green', 40)
@@ -100,12 +128,18 @@ for idx, animal in enumerate(animals):
 # moving = False
 def main():
 
-    draw_red = True
-    draw_yellow = True
+    # draw_red = True
+    # draw_yellow = True
     red_idx = None
     moving_red_piece = False
-    moving_red = False
-    moving_yellow = False
+    # moving_red = False
+    # moving_yellow = False
+    yellow_idx = None
+    moving_yellow_piece = False
+    blue_idx = None
+    moving_blue_piece = False
+    green_idx = None
+    moving_green_piece = False
     moving = False
     run = True
 
@@ -149,14 +183,18 @@ def main():
 
         island_tile_rects = zip(island_drawn_tiles, island_rects)
 
-        for red_piece in red_pieces:
-            if red_piece.alive:
-                red_piece.draw(screen, red_piece.rect)
-        if draw_red:
+        draw_pieces(red_pieces)
+        draw_pieces(yellow_pieces)
+        draw_pieces(blue_pieces)
+        draw_pieces(green_pieces)
+        # for red_piece in red_pieces:
+        #     if red_piece.alive:
+        #         red_piece.draw(screen, red_piece.rect)
+        # if draw_red:
             # screen.blit(red_piece, red_rect)
-            red_piece.draw(screen, red_piece.rect)
-        if draw_yellow:
-            yellow_piece.draw(screen, yellow_piece.rect)
+            # red_piece.draw(screen, red_piece.rect)
+        # if draw_yellow:
+            # yellow_piece.draw(screen, yellow_piece.rect)
         # screen.blit(yellow_piece, yellow_rect)
 
         for event in pygame.event.get():
@@ -198,45 +236,62 @@ def main():
                         moving = True
                         animal_idx = idx
 
-                if red_piece.rect.collidepoint(pos):
-                    moving_red = True
-                if yellow_piece.rect.collidepoint(pos):
-                    moving_yellow = True
+                # if red_piece.rect.collidepoint(pos):
+                    # moving_red = True
+                # if yellow_piece.rect.collidepoint(pos):
+                    # moving_yellow = True
 
                 # red_idx = None
-                for idx, red_piece in enumerate(red_pieces):
-                    if red_piece.rect.collidepoint(pos):
-                        moving_red_piece = True
-                        red_idx = idx
+                # for idx, red_piece in enumerate(red_pieces):
+                #     if red_piece.rect.collidepoint(pos):
+                #         moving_red_piece = True
+                #         red_idx = idx
+
+                moving_red_piece, red_idx = clicked_pieces(red_pieces, pos)
+                moving_yellow_piece, yellow_idx = clicked_pieces(yellow_pieces, pos)
+                moving_blue_piece, blue_idx = clicked_pieces(blue_pieces, pos)
+                moving_green_piece, green_idx = clicked_pieces(green_pieces, pos)
 
             elif event.type == pygame.MOUSEMOTION:
                 if moving:
                     animals[animal_idx].rect.move_ip(event.rel)
-                elif moving_red_piece:
-                    red_pieces[red_idx].rect.move_ip(event.rel)
-                elif moving_red:
-                    red_piece.rect.move_ip(event.rel)
-                elif moving_yellow:
-                    yellow_piece.rect.move_ip(event.rel)
+                determine_moving_piece(moving_red_piece, red_pieces, red_idx, event)
+                determine_moving_piece(moving_yellow_piece, yellow_pieces, yellow_idx, event)
+                determine_moving_piece(moving_blue_piece, blue_pieces, blue_idx, event)
+                determine_moving_piece(moving_green_piece, green_pieces, green_idx, event)
+                # elif moving_red_piece:
+                #     red_pieces[red_idx].rect.move_ip(event.rel)
+                # elif moving_red:
+                #     red_piece.rect.move_ip(event.rel)
+                # if moving_yellow:
+                    # yellow_piece.rect.move_ip(event.rel)
 
             elif event.type == pygame.MOUSEBUTTONUP:
                 moving = False
-                moving_red_piece = False
-                moving_red = False
-                moving_yellow = False
+                # moving_red_piece = False
+                moving_red_piece = stop_moving_piece(moving_red_piece)
+                moving_yellow_piece = stop_moving_piece(moving_yellow_piece)
+                moving_blue_piece = stop_moving_piece(moving_blue_piece)
+                moving_green_piece = stop_moving_piece(moving_green_piece)
+                # moving_red = False
+                # moving_yellow = False
 
         for animal in animals:
             if animal.eat_swimmers:
-                if red_idx == None:
-                    pass
-                else:
-                    if pygame.Rect.colliderect(red_pieces[red_idx].rect, animal.rect) and not moving_red_piece:
-                        red_pieces[red_idx].alive = False
-                    pass
-                if pygame.Rect.colliderect(red_piece.rect, animal.rect) and not moving_red:
-                    draw_red = False
-                if pygame.Rect.colliderect(yellow_piece.rect, animal.rect) and not moving_yellow:
-                    draw_yellow = False
+                eat_swimmers(moving_red_piece, red_pieces, red_idx, animal)
+                eat_swimmers(moving_yellow_piece, yellow_pieces, yellow_idx, animal)
+                eat_swimmers(moving_blue_piece, blue_pieces, blue_idx, animal)
+                eat_swimmers(moving_green_piece, green_pieces, green_idx, animal)
+
+                # if red_idx == None:
+                #     pass
+                # else:
+                #     if pygame.Rect.colliderect(red_pieces[red_idx].rect, animal.rect) and not moving_red_piece:
+                #         red_pieces[red_idx].alive = False
+                # if pygame.Rect.colliderect(red_piece.rect, animal.rect) and not moving_red:
+                #     draw_red = False
+                # if pygame.Rect.colliderect(yellow_piece.rect, animal.rect) and not moving_yellow:
+                    # draw_yellow = False
 
 
 

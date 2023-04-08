@@ -95,27 +95,43 @@ def draw_pieces(pieces):
         if piece.alive:
             piece.draw(screen, piece.rect)
 
-def clicked_pieces(pieces, mouse_position):
-    moving_piece = False
+# def clicked_pieces(pieces, mouse_position):
+#     moving_piece = False
+#     for idx, piece in enumerate(pieces):
+#         if piece.rect.collidepoint(mouse_position):
+#             moving_piece = True
+#             break
+#     return moving_piece, idx
+def determine_moving_piece(pieces, mouse_position):
     for idx, piece in enumerate(pieces):
         if piece.rect.collidepoint(mouse_position):
-            moving_piece = True
+            piece.moving = True
             break
-    return moving_piece, idx
+    return idx
 
-def determine_moving_piece(moving, pieces, index, event):
-    if moving:
-        pieces[index].rect.move_ip(event.rel)
 
-def stop_moving_piece(moving_piece):
-    moving_piece = False
-    return moving_piece
-
-def eat_swimmers(moving, pieces, index, animal):
+# def determine_moving_piece(moving, pieces, index, event):
+#     if moving:
+#         pieces[index].rect.move_ip(event.rel)
+def move_piece(pieces, index, event):
     if index == None:
         pass
     else:
-        if pygame.Rect.colliderect(pieces[index].rect, animal.rect) and not moving:
+        if pieces[index].moving:
+            pieces[index].rect.move_ip(event.rel)
+
+# def stop_moving_piece(moving_piece):
+#     moving_piece = False
+#     return moving_piece
+def stop_moving_piece(pieces, index):
+    pieces[index].moving = False
+    # return moving_piece
+
+def eat_swimmers(pieces, index, animal):
+    if index == None:
+        pass
+    else:
+        if pygame.Rect.colliderect(pieces[index].rect, animal.rect) and not pieces[index].moving:
             pieces[index].alive = False
     # return pieces[idx].alive
 
@@ -123,6 +139,7 @@ def eat_swimmers(moving, pieces, index, animal):
 # create_game_pieces('yellow', 20)
 # create_game_pieces('green', 40)
 # create_game_pieces('blue', 60)
+# create_game_pieces('maroon', 80)
 
 
 # moving = False
@@ -131,15 +148,15 @@ def main():
     # draw_red = True
     # draw_yellow = True
     red_idx = None
-    moving_red_piece = False
+    # moving_red_piece = False
     # moving_red = False
     # moving_yellow = False
     yellow_idx = None
-    moving_yellow_piece = False
+    # moving_yellow_piece = False
     blue_idx = None
-    moving_blue_piece = False
+    # moving_blue_piece = False
     green_idx = None
-    moving_green_piece = False
+    # moving_green_piece = False
     moving = False
     run = True
 
@@ -247,18 +264,25 @@ def main():
                 #         moving_red_piece = True
                 #         red_idx = idx
 
-                moving_red_piece, red_idx = clicked_pieces(red_pieces, pos)
-                moving_yellow_piece, yellow_idx = clicked_pieces(yellow_pieces, pos)
-                moving_blue_piece, blue_idx = clicked_pieces(blue_pieces, pos)
-                moving_green_piece, green_idx = clicked_pieces(green_pieces, pos)
+                red_idx = determine_moving_piece(red_pieces, pos)
+                yellow_idx = determine_moving_piece(yellow_pieces, pos)
+                blue_idx = determine_moving_piece(blue_pieces, pos)
+                green_idx = determine_moving_piece(green_pieces, pos)
+                # moving_yellow_piece, yellow_idx = clicked_pieces(yellow_pieces, pos)
+                # moving_blue_piece, blue_idx = clicked_pieces(blue_pieces, pos)
+                # moving_green_piece, green_idx = clicked_pieces(green_pieces, pos)
 
             elif event.type == pygame.MOUSEMOTION:
                 if moving:
                     animals[animal_idx].rect.move_ip(event.rel)
-                determine_moving_piece(moving_red_piece, red_pieces, red_idx, event)
-                determine_moving_piece(moving_yellow_piece, yellow_pieces, yellow_idx, event)
-                determine_moving_piece(moving_blue_piece, blue_pieces, blue_idx, event)
-                determine_moving_piece(moving_green_piece, green_pieces, green_idx, event)
+                # if red_idx is not None:
+                move_piece(red_pieces, red_idx, event)
+                move_piece(yellow_pieces, yellow_idx, event)
+                move_piece(blue_pieces, blue_idx, event)
+                move_piece(green_pieces, green_idx, event)
+                # determine_moving_piece(moving_yellow_piece, yellow_pieces, yellow_idx, event)
+                # determine_moving_piece(moving_blue_piece, blue_pieces, blue_idx, event)
+                # determine_moving_piece(moving_green_piece, green_pieces, green_idx, event)
                 # elif moving_red_piece:
                 #     red_pieces[red_idx].rect.move_ip(event.rel)
                 # elif moving_red:
@@ -269,19 +293,22 @@ def main():
             elif event.type == pygame.MOUSEBUTTONUP:
                 moving = False
                 # moving_red_piece = False
-                moving_red_piece = stop_moving_piece(moving_red_piece)
-                moving_yellow_piece = stop_moving_piece(moving_yellow_piece)
-                moving_blue_piece = stop_moving_piece(moving_blue_piece)
-                moving_green_piece = stop_moving_piece(moving_green_piece)
+                stop_moving_piece(red_pieces, red_idx)
+                stop_moving_piece(yellow_pieces, yellow_idx)
+                stop_moving_piece(blue_pieces, blue_idx)
+                stop_moving_piece(green_pieces, green_idx)
+                # moving_yellow_piece = stop_moving_piece(moving_yellow_piece)
+                # moving_blue_piece = stop_moving_piece(moving_blue_piece)
+                # moving_green_piece = stop_moving_piece(moving_green_piece)
                 # moving_red = False
                 # moving_yellow = False
 
         for animal in animals:
             if animal.eat_swimmers:
-                eat_swimmers(moving_red_piece, red_pieces, red_idx, animal)
-                eat_swimmers(moving_yellow_piece, yellow_pieces, yellow_idx, animal)
-                eat_swimmers(moving_blue_piece, blue_pieces, blue_idx, animal)
-                eat_swimmers(moving_green_piece, green_pieces, green_idx, animal)
+                eat_swimmers(red_pieces, red_idx, animal)
+                eat_swimmers(yellow_pieces, yellow_idx, animal)
+                eat_swimmers(blue_pieces, blue_idx, animal)
+                eat_swimmers(green_pieces, green_idx, animal)
 
                 # if red_idx == None:
                 #     pass

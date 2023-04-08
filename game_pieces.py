@@ -13,6 +13,7 @@ class GamePiece:
     def __init__(self, color, value, png, x, y):
         self.color = color
         self.value = value
+        self.moving = False
         self.swimming = False
         self.boat = False
         self.safe = False

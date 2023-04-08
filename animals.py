@@ -5,7 +5,8 @@ import tiles
 class Whale:
     def __init__(self):
         self.movement = 3
-        self.action = 'capsize boat'
+        self.capsize_boat = True
+        self.eat_swimmers = False
         # self.coordinates = coordinates
         self.image = self.load_image()
         self.selected = False
@@ -28,7 +29,8 @@ class Whale:
 class Shark:
     def __init__(self):
         self.movement = 2
-        self.action = 'eat swimmers'
+        self.capsize_boat = False
+        self.eat_swimmers = True
         # self.coordinates = coordinates
         self.image = self.load_image()
         self.rect = self.image.get_rect()
@@ -46,7 +48,8 @@ class Shark:
 class Serpent:
     def __init__(self):
         self.movement = 1
-        self.action = 'capsize boat & eat swimmers'
+        self.capsize_boat = True
+        self.eat_swimmers = True
         self.image = self.load_image()
         self.rect = self.image.get_rect()
 

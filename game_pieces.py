@@ -22,7 +22,7 @@ class GamePiece:
 
     def load_image(self):
         image = pygame.image.load(self.png).convert_alpha()
-        image = pygame.transform.scale(image, (50, 50))
+        # image = pygame.transform.scale(image, (50, 50))
         return image
 
     def draw(self, surface, coords):

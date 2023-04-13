@@ -131,7 +131,8 @@ def eat_swimmers(pieces, index, animal):
     if index == None:
         pass
     else:
-        if pygame.Rect.colliderect(pieces[index].rect, animal.rect) and not pieces[index].moving:
+        if pygame.Rect.colliderect(pieces[index].rect, animal.rect) and not pieces[index].moving \
+        and pieces[index].swimming:
             pieces[index].alive = False
     # return pieces[idx].alive
 
@@ -302,6 +303,20 @@ def main():
                 # moving_green_piece = stop_moving_piece(moving_green_piece)
                 # moving_red = False
                 # moving_yellow = False
+
+        for piece in red_pieces:
+            for ocean_rect in ocean_rects:
+                if pygame.Rect.colliderect(piece.rect, ocean_rect) and not piece.moving:
+                    piece.swimming = True
+
+            for island_rect in island_rects:
+                if pygame.Rect.colliderect(piece.rect, island_rect) and not piece.moving:
+                    piece.swimming = False
+
+            # print(piece.swimming)
+
+
+
 
         for animal in animals:
             if animal.eat_swimmers:

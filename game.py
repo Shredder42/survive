@@ -2,7 +2,7 @@ import pygame
 import math
 from random import choice
 from tiles import Island, Ocean, Tile
-from game_pieces import GamePiece, create_game_pieces
+from game_pieces import GamePiece, roll_die, create_game_pieces
 from animals import Whale, Shark, Serpent
 
 pygame.init()
@@ -69,10 +69,10 @@ green_pieces = make_pieces('green', 'green_piece.png', 1200, 350)
 # whales = create_animals(Whale(), 5, island)[0]
 # whales = [Whale() for i in range(5)]
 # whale_rects = island.return_tile_coords()[0]
-sharks = [Shark() for i in range(6)]
-shark_rects = island.return_tile_coords()[1]
-serpents = [Serpent() for i in range(5)]
-serpent_initial_rects = [(150, 105), (975, 180), (540, 480), (110, 780), (935, 855)]
+# sharks = [Shark() for i in range(6)]
+# shark_rects = island.return_tile_coords()[1]
+# serpents = [Serpent() for i in range(5)]
+# serpent_initial_rects = [(150, 105), (975, 180), (540, 480), (110, 780), (935, 855)]
 
 def set_initial_serpent_rects(serpents, serpent_initial_rects):
     serpent_rects = []
@@ -81,14 +81,14 @@ def set_initial_serpent_rects(serpents, serpent_initial_rects):
         serpent.rect.y = serpent_initial_rects[idx][1]
         serpent_rects.append(serpent.rect)
     return serpent_rects
-serpent_rects = set_initial_serpent_rects(serpents, serpent_initial_rects)
+# serpent_rects = set_initial_serpent_rects(serpents, serpent_initial_rects)
 
-animals = sharks + serpents
-animal_rects = shark_rects + serpent_rects
+# animals = serpents
+# animal_rects = serpent_rects
 # print(animals)
 
-for idx, animal in enumerate(animals):
-    animal.rect.x, animal.rect.y = animal_rects[idx][0], animal_rects[idx][1]
+# for idx, animal in enumerate(animals):
+#     animal.rect.x, animal.rect.y = animal_rects[idx][0], animal_rects[idx][1]
 
 def draw_pieces(pieces):
     for piece in pieces:
@@ -158,11 +158,23 @@ def main():
     # moving_blue_piece = False
     green_idx = None
     # moving_green_piece = False
+    game_piece_idx = None
     moving = False
     run = True
 
-    whale_list = []
+    whales = []
     whale_idx = None
+    sharks =[]
+    shark_idx = None
+    serpent_initial_rects = [(150, 105), (975, 180), (540, 480), (110, 780), (935, 855)]
+    serpents = [Serpent(rect) for rect in serpent_initial_rects]
+    serpent_idx = None
+
+    animals = whales + sharks + serpents
+    animal_idx = None
+
+    game_pieces = red_pieces + yellow_pieces + blue_pieces + green_pieces
+    # serpent_rects = set_initial_serpent_rects(serpents, serpent_initial_rects)
     # test_whale_moving = False
     # i = 0
     # for item in whales:
@@ -173,13 +185,16 @@ def main():
 
         screen.fill(OCEAN_BLUE)
         # whales[0].draw(screen, whales[0].rect)
+        animals = whales + sharks + serpents
         for animal in animals:
-            animal.draw(screen, animal.rect)
+            animal.draw(screen)
 
-        for whale in whale_list:
-            whale.draw(screen)
+        # for whale in whales:
+        #     whale.draw(screen)
         # for shark in sharks:
-        #     shark.draw(screen, shark.rect)
+        #     shark.draw(screen)
+        # for serpent in serpents:
+        #     serpent.draw(screen)
 
         # screen.blit(whale.image, whale.rect)
         # draw_tile(screen, 6, math.pi / 6, 0, 0, 50, RED)
@@ -217,7 +232,7 @@ def main():
         # for red_piece in red_pieces:
         #     if red_piece.alive:
         #         red_piece.draw(screen, red_piece.rect)
-        # if draw_red:
+        # if draw_red:rect.left
             # screen.blit(red_piece, red_rect)
             # red_piece.draw(screen, red_piece.rect)
         # if draw_yellow:
@@ -239,13 +254,11 @@ def main():
                         # pygame.draw.polygon(screen, OCEAN_BLUE, island_tile.coordinates) # why do I need this?
                         ocean.tiles.append(Tile(BLACK, island_tile.coordinates))
                         if island_tile.backside == 'add whale':
-                            whale_list.append(Whale((island_tile.coordinates[4][0] + 20, island_tile.coordinates[4][1] - 5)))
+                            whales.append(Whale((island_tile.coordinates[4][0] + 20, island_tile.coordinates[4][1] - 5)))
                             print(island_tile.coordinates)
                             # print(whale_list)
-                        # if island_tile.backside == 'add whale':
-                        #     whale.draw(screen, (island_rect.left + 15, island_rect.top + 15))
-                        # elif island_tile.backside == 'add shark':
-                        #     shark = animals.Shark((island_rect.left + 15, island_rect.top + 15))
+                        elif island_tile.backside == 'add shark':
+                            sharks.append(Shark((island_tile.coordinates[4][0] + 10, island_tile.coordinates[4][1] - 5)))
                         #     shark.draw(screen)
 
                 # whale.move(screen, pos)
@@ -261,11 +274,11 @@ def main():
                 #     moving = True
                 #     print('whale 0 selected')
 
-                animal_idx = None
-                for idx, animal in enumerate(animals):
-                    if animal.rect.collidepoint(pos):
-                        moving = True
-                        animal_idx = idx
+                # animal_idx = None
+                # for idx, animal in enumerate(animals):
+                #     if animal.rect.collidepoint(pos):
+                #         moving = True
+                #         animal_idx = idx
 
                 # if red_piece.rect.collidepoint(pos):
                     # moving_red = True
@@ -280,30 +293,39 @@ def main():
                 # for idx, test_whale in enumerate(whale_list):
                 #     if test_whale.rect.collidepoint(pos):
                 #         test_whale_moving = True
-                if len(whale_list) > 0:
-                    whale_idx = determine_moving_piece(whale_list, pos)
-
-                red_idx = determine_moving_piece(red_pieces, pos)
-                yellow_idx = determine_moving_piece(yellow_pieces, pos)
-                blue_idx = determine_moving_piece(blue_pieces, pos)
-                green_idx = determine_moving_piece(green_pieces, pos)
+                # if len(whales) > 0:
+                #     whale_idx = determine_moving_piece(whales, pos)
+                # if len(sharks) > 0:
+                #     shark_idx = determine_moving_piece(sharks, pos)
+                if len(animals) > 0:
+                    animal_idx = determine_moving_piece(animals, pos)
+                game_piece_idx = determine_moving_piece(game_pieces, pos)
+                # red_idx = determine_moving_piece(red_pieces, pos)
+                # yellow_idx = determine_moving_piece(yellow_pieces, pos)
+                # blue_idx = determine_moving_piece(blue_pieces, pos)
+                # green_idx = determine_moving_piece(green_pieces, pos)
                 # moving_yellow_piece, yellow_idx = clicked_pieces(yellow_pieces, pos)
                 # moving_blue_piece, blue_idx = clicked_pieces(blue_pieces, pos)
                 # moving_green_piece, green_idx = clicked_pieces(green_pieces, pos)
 
             elif event.type == pygame.MOUSEMOTION:
-                if moving:
-                    animals[animal_idx].rect.move_ip(event.rel)
+                # if moving:
+                #     animals[animal_idx].rect.move_ip(event.rel)
 
                 # if test_whale_moving:
                 #     whale_list[whale_idx].rect.move_ip(event.rel)
-                if len(whale_list) > 0:
-                    move_piece(whale_list, whale_idx, event)
+                # if len(whales) > 0:
+                #     move_piece(whales, whale_idx, event)
+                # if len(sharks) > 0:
+                #     move_piece(sharks, shark_idx, event)
+                if len(animals) > 0:
+                    move_piece(animals, animal_idx, event)
                 # if red_idx is not None:
-                move_piece(red_pieces, red_idx, event)
-                move_piece(yellow_pieces, yellow_idx, event)
-                move_piece(blue_pieces, blue_idx, event)
-                move_piece(green_pieces, green_idx, event)
+                move_piece(game_pieces, game_piece_idx, event)
+                # move_piece(red_pieces, red_idx, event)
+                # move_piece(yellow_pieces, yellow_idx, event)
+                # move_piece(blue_pieces, blue_idx, event)
+                # move_piece(green_pieces, green_idx, event)
                 # determine_moving_piece(moving_yellow_piece, yellow_pieces, yellow_idx, event)
                 # determine_moving_piece(moving_blue_piece, blue_pieces, blue_idx, event)
                 # determine_moving_piece(moving_green_piece, green_pieces, green_idx, event)
@@ -317,27 +339,32 @@ def main():
             elif event.type == pygame.MOUSEBUTTONUP:
                 moving = False
                 # test_whale_moving = False
-                if len(whale_list) > 0:
-                    stop_moving_piece(whale_list, whale_idx)
+                # if len(whales) > 0:
+                #     stop_moving_piece(whales, whale_idx)
+                # if len(sharks) > 0:
+                #     stop_moving_piece(sharks, shark_idx)
+                if len(animals) > 0:
+                    stop_moving_piece(animals, animal_idx)
                 # moving_red_piece = False
-                stop_moving_piece(red_pieces, red_idx)
-                stop_moving_piece(yellow_pieces, yellow_idx)
-                stop_moving_piece(blue_pieces, blue_idx)
-                stop_moving_piece(green_pieces, green_idx)
+                stop_moving_piece(game_pieces, game_piece_idx)
+                # stop_moving_piece(red_pieces, red_idx)
+                # stop_moving_piece(yellow_pieces, yellow_idx)
+                # stop_moving_piece(blue_pieces, blue_idx)
+                # stop_moving_piece(green_pieces, green_idx)
                 # moving_yellow_piece = stop_moving_piece(moving_yellow_piece)
                 # moving_blue_piece = stop_moving_piece(moving_blue_piece)
                 # moving_green_piece = stop_moving_piece(moving_green_piece)
                 # moving_red = False
                 # moving_yellow = False
 
-        for piece in red_pieces:
+        for piece in game_pieces:
             for ocean_rect in ocean_rects:
                 if pygame.Rect.colliderect(piece.rect, ocean_rect) and not piece.moving:
                     piece.swimming = True
 
-            for island_rect in island_rects:
-                if pygame.Rect.colliderect(piece.rect, island_rect) and not piece.moving:
-                    piece.swimming = False
+            # for island_rect in island_rects:
+            #     if pygame.Rect.colliderect(piece.rect, island_rect) and not piece.moving:
+            #         piece.swimming = False
             # print(piece.swimming)
 
         # figure out where the tile rects actually are
@@ -348,10 +375,11 @@ def main():
 
         for animal in animals:
             if animal.eat_swimmers:
-                eat_swimmers(red_pieces, red_idx, animal)
-                eat_swimmers(yellow_pieces, yellow_idx, animal)
-                eat_swimmers(blue_pieces, blue_idx, animal)
-                eat_swimmers(green_pieces, green_idx, animal)
+                eat_swimmers(game_pieces, game_piece_idx, animal)
+                # eat_swimmers(rec_piece, red_idx, animal)
+                # eat_swimmers(yellow_pieces, yellow_idx, animal)
+                # eat_swimmers(blue_pieces, blue_idx, animal)
+                # eat_swimmers(green_pieces, green_idx, animal)
 
                 # if red_idx == None:
                 #     pass
@@ -379,7 +407,8 @@ def main():
     print(len(island_drawn_tiles))
     print(ocean_rects[0])
     print(red_pieces[0].rect)
-    print(whale_list)
+    print(whales)
+    roll_die()
 
 if __name__ == '__main__':
     main()

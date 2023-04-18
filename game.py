@@ -3,7 +3,7 @@ import math
 from random import choice
 from tiles import Island, Ocean, Tile
 from game_pieces import GamePiece, create_game_pieces
-from animals import Whale, Shark, Serpent, WhaleTest
+from animals import Whale, Shark, Serpent
 
 pygame.init()
 
@@ -67,8 +67,8 @@ green_pieces = make_pieces('green', 'green_piece.png', 1200, 350)
 #         return [animals.animal for i in range(num_of_animals)], island.return_tile_coords() [0]
 
 # whales = create_animals(Whale(), 5, island)[0]
-whales = [Whale() for i in range(5)]
-whale_rects = island.return_tile_coords()[0]
+# whales = [Whale() for i in range(5)]
+# whale_rects = island.return_tile_coords()[0]
 sharks = [Shark() for i in range(6)]
 shark_rects = island.return_tile_coords()[1]
 serpents = [Serpent() for i in range(5)]
@@ -83,8 +83,8 @@ def set_initial_serpent_rects(serpents, serpent_initial_rects):
     return serpent_rects
 serpent_rects = set_initial_serpent_rects(serpents, serpent_initial_rects)
 
-animals = whales + sharks + serpents
-animal_rects = whale_rects + shark_rects + serpent_rects
+animals = sharks + serpents
+animal_rects = shark_rects + serpent_rects
 # print(animals)
 
 for idx, animal in enumerate(animals):
@@ -161,8 +161,8 @@ def main():
     moving = False
     run = True
 
-    whale_test_list = []
-    whale_test_idx = None
+    whale_list = []
+    whale_idx = None
     # test_whale_moving = False
     # i = 0
     # for item in whales:
@@ -176,15 +176,15 @@ def main():
         for animal in animals:
             animal.draw(screen, animal.rect)
 
-        for test_whale in whale_test_list:
-            test_whale.draw(screen)
+        for whale in whale_list:
+            whale.draw(screen)
         # for shark in sharks:
         #     shark.draw(screen, shark.rect)
 
         # screen.blit(whale.image, whale.rect)
         # draw_tile(screen, 6, math.pi / 6, 0, 0, 50, RED)
 
-        # for test_whale in whale_test_list:
+        # for test_whale in whale_list:
 
 
         ocean_rects = []
@@ -238,10 +238,10 @@ def main():
                         island_tile.sunk = True
                         # pygame.draw.polygon(screen, OCEAN_BLUE, island_tile.coordinates) # why do I need this?
                         ocean.tiles.append(Tile(BLACK, island_tile.coordinates))
-                        if island_tile.backside == 'add boat':
-                            whale_test_list.append(WhaleTest((island_tile.coordinates[4][0] + 20, island_tile.coordinates[4][1] - 5)))
+                        if island_tile.backside == 'add whale':
+                            whale_list.append(Whale((island_tile.coordinates[4][0] + 20, island_tile.coordinates[4][1] - 5)))
                             print(island_tile.coordinates)
-                            # print(whale_test_list)
+                            # print(whale_list)
                         # if island_tile.backside == 'add whale':
                         #     whale.draw(screen, (island_rect.left + 15, island_rect.top + 15))
                         # elif island_tile.backside == 'add shark':
@@ -277,11 +277,11 @@ def main():
                 #     if red_piece.rect.collidepoint(pos):
                 #         moving_red_piece = True
                 #         red_idx = idx
-                # for idx, test_whale in enumerate(whale_test_list):
+                # for idx, test_whale in enumerate(whale_list):
                 #     if test_whale.rect.collidepoint(pos):
                 #         test_whale_moving = True
-                if len(whale_test_list) > 0:
-                    whale_test_idx = determine_moving_piece(whale_test_list, pos)
+                if len(whale_list) > 0:
+                    whale_idx = determine_moving_piece(whale_list, pos)
 
                 red_idx = determine_moving_piece(red_pieces, pos)
                 yellow_idx = determine_moving_piece(yellow_pieces, pos)
@@ -296,9 +296,9 @@ def main():
                     animals[animal_idx].rect.move_ip(event.rel)
 
                 # if test_whale_moving:
-                #     whale_test_list[whale_test_idx].rect.move_ip(event.rel)
-                if len(whale_test_list) > 0:
-                    move_piece(whale_test_list, whale_test_idx, event)
+                #     whale_list[whale_idx].rect.move_ip(event.rel)
+                if len(whale_list) > 0:
+                    move_piece(whale_list, whale_idx, event)
                 # if red_idx is not None:
                 move_piece(red_pieces, red_idx, event)
                 move_piece(yellow_pieces, yellow_idx, event)
@@ -317,8 +317,8 @@ def main():
             elif event.type == pygame.MOUSEBUTTONUP:
                 moving = False
                 # test_whale_moving = False
-                if len(whale_test_list) > 0:
-                    stop_moving_piece(whale_test_list, whale_test_idx)
+                if len(whale_list) > 0:
+                    stop_moving_piece(whale_list, whale_idx)
                 # moving_red_piece = False
                 stop_moving_piece(red_pieces, red_idx)
                 stop_moving_piece(yellow_pieces, yellow_idx)
@@ -379,7 +379,7 @@ def main():
     print(len(island_drawn_tiles))
     print(ocean_rects[0])
     print(red_pieces[0].rect)
-    print(whale_test_list)
+    print(whale_list)
 
 if __name__ == '__main__':
     main()

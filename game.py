@@ -177,7 +177,7 @@ def main():
     serpents = [Serpent(rect) for rect in serpent_initial_rects]
     # serpent_idx = None
 
-    animals = whales + sharks + serpents
+    # animals = whales + sharks + serpents
     animal_idx = None
 
     game_pieces = red_pieces + yellow_pieces + blue_pieces + green_pieces
@@ -188,6 +188,7 @@ def main():
     #     item.draw(screen, whale_rects[i])
     #     i += 1
     die_result = None
+    die_rolled = False
 
     while run:
 
@@ -250,6 +251,7 @@ def main():
         button.draw_button(screen)
         show_last_die_result(die_result)
 
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -308,9 +310,17 @@ def main():
                 #     whale_idx = determine_moving_piece(whales, pos)
                 # if len(sharks) > 0:
                 #     shark_idx = determine_moving_piece(sharks, pos)
-                if len(animals) > 0:
+                if button.rect.collidepoint((pos)):
+                    die_result = roll_die()
+                    print(die_result)
+                    die_rolled = True
+
+                if die_rolled:
                     animal_idx = determine_moving_piece(animals, pos)
-                game_piece_idx = determine_moving_piece(game_pieces, pos)
+                    animal_rect = animals[animal_idx].rect.copy()
+                    print(animal_rect)
+                if not die_rolled:
+                    game_piece_idx = determine_moving_piece(game_pieces, pos)
                 # red_idx = determine_moving_piece(red_pieces, pos)
                 # yellow_idx = determine_moving_piece(yellow_pieces, pos)
                 # blue_idx = determine_moving_piece(blue_pieces, pos)
@@ -319,9 +329,7 @@ def main():
                 # moving_blue_piece, blue_idx = clicked_pieces(blue_pieces, pos)
                 # moving_green_piece, green_idx = clicked_pieces(green_pieces, pos)
 
-                if button.rect.collidepoint((pos)):
-                    die_result = roll_die()
-                    print(die_result)
+
 
             elif event.type == pygame.MOUSEMOTION:
                 # if moving:
@@ -333,10 +341,11 @@ def main():
                 #     move_piece(whales, whale_idx, event)
                 # if len(sharks) > 0:
                 #     move_piece(sharks, shark_idx, event)
-                if len(animals) > 0:
+                if die_rolled:
                     move_piece(animals, animal_idx, event)
                 # if red_idx is not None:
-                move_piece(game_pieces, game_piece_idx, event)
+                if not die_rolled:
+                    move_piece(game_pieces, game_piece_idx, event)
                 # move_piece(red_pieces, red_idx, event)
                 # move_piece(yellow_pieces, yellow_idx, event)
                 # move_piece(blue_pieces, blue_idx, event)
@@ -358,10 +367,15 @@ def main():
                 #     stop_moving_piece(whales, whale_idx)
                 # if len(sharks) > 0:
                 #     stop_moving_piece(sharks, shark_idx)
-                if len(animals) > 0:
+                if die_rolled: # finish up with handling die rolls
                     stop_moving_piece(animals, animal_idx)
+                    if animals[animal_idx].rect != animal_rect:
+                        die_rolled = False
+                    print(animals[animal_idx].rect)
+                    print(animal_rect)
                 # moving_red_piece = False
-                stop_moving_piece(game_pieces, game_piece_idx)
+                if not die_rolled:
+                    stop_moving_piece(game_pieces, game_piece_idx)
                 # stop_moving_piece(red_pieces, red_idx)
                 # stop_moving_piece(yellow_pieces, yellow_idx)
                 # stop_moving_piece(blue_pieces, blue_idx)

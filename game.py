@@ -1,12 +1,13 @@
-import pygame
+import pygame, pygame.font
 import math
 from random import choice
 from tiles import Island, Ocean, Tile
 from game_pieces import GamePiece, roll_die, create_game_pieces
 from animals import Whale, Shark, Serpent
+from button import Button
 
 pygame.init()
-
+pygame.font.init()
 
 SCREEN_WIDTH, SCREEN_HEIGHT = 1350, 1200
 OCEAN_BLUE = (43, 101, 236)
@@ -26,6 +27,7 @@ def draw_tile(surface, num_sides, tilt_angle, x, y, radius, color):
 
 island = Island()
 ocean = Ocean()
+button = Button('Roll Die')
 
 def make_pieces(color, png, start_x, start_y):
     pieces = []
@@ -83,7 +85,7 @@ def set_initial_serpent_rects(serpents, serpent_initial_rects):
     return serpent_rects
 # serpent_rects = set_initial_serpent_rects(serpents, serpent_initial_rects)
 
-# animals = serpents
+# animals = serpents(255, 255, 255)
 # animal_rects = serpent_rects
 # print(animals)
 
@@ -136,6 +138,11 @@ def eat_swimmers(pieces, index, animal):
             pieces[index].alive = False
     # return pieces[idx].alive
 
+def show_last_die_result(die):
+    font = pygame.font.SysFont(None, 24)
+    img = font.render(die, True, (255, 255, 255))
+    screen.blit(img, (1250, 830))
+
 # create_game_pieces('red', 0)
 # create_game_pieces('yellow', 20)
 # create_game_pieces('green', 40)
@@ -159,16 +166,16 @@ def main():
     green_idx = None
     # moving_green_piece = False
     game_piece_idx = None
-    moving = False
+    # moving = False
     run = True
 
     whales = []
-    whale_idx = None
+    # whale_idx = None
     sharks =[]
-    shark_idx = None
+    # shark_idx = None
     serpent_initial_rects = [(150, 105), (975, 180), (540, 480), (110, 780), (935, 855)]
     serpents = [Serpent(rect) for rect in serpent_initial_rects]
-    serpent_idx = None
+    # serpent_idx = None
 
     animals = whales + sharks + serpents
     animal_idx = None
@@ -180,6 +187,7 @@ def main():
     # for item in whales:
     #     item.draw(screen, whale_rects[i])
     #     i += 1
+    die_result = None
 
     while run:
 
@@ -239,6 +247,9 @@ def main():
             # yellow_piece.draw(screen, yellow_piece.rect)
         # screen.blit(yellow_piece, yellow_rect)
 
+        button.draw_button(screen)
+        show_last_die_result(die_result)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
@@ -258,7 +269,7 @@ def main():
                             print(island_tile.coordinates)
                             # print(whale_list)
                         elif island_tile.backside == 'add shark':
-                            sharks.append(Shark((island_tile.coordinates[4][0] + 10, island_tile.coordinates[4][1] - 5)))
+                            sharks.append(Shark((island_tile.coordinates[4][0] + 10, island_tile.coordinates[4][1] - 10)))
                         #     shark.draw(screen)
 
                 # whale.move(screen, pos)
@@ -308,6 +319,10 @@ def main():
                 # moving_blue_piece, blue_idx = clicked_pieces(blue_pieces, pos)
                 # moving_green_piece, green_idx = clicked_pieces(green_pieces, pos)
 
+                if button.rect.collidepoint((pos)):
+                    die_result = roll_die()
+                    print(die_result)
+
             elif event.type == pygame.MOUSEMOTION:
                 # if moving:
                 #     animals[animal_idx].rect.move_ip(event.rel)
@@ -337,7 +352,7 @@ def main():
                     # yellow_piece.rect.move_ip(event.rel)
 
             elif event.type == pygame.MOUSEBUTTONUP:
-                moving = False
+                # moving = False
                 # test_whale_moving = False
                 # if len(whales) > 0:
                 #     stop_moving_piece(whales, whale_idx)
@@ -408,7 +423,9 @@ def main():
     print(ocean_rects[0])
     print(red_pieces[0].rect)
     print(whales)
-    roll_die()
+    # roll_die()
+    print(button.rect)
+
 
 if __name__ == '__main__':
     main()

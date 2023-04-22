@@ -40,7 +40,7 @@ class Shark:
     def draw(self, surface):
         return surface.blit(self.image, self.rect)
 
-class Serpent(Whale):
+class Serpent:
     def __init__(self, coordinates):
         self.movement = 1
         self.capsize_boat = True
@@ -59,6 +59,7 @@ class Serpent(Whale):
 
     def draw(self, surface):
         return surface.blit(self.image, self.rect)
+
 
 
 

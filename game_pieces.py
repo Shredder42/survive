@@ -9,7 +9,7 @@ def create_game_pieces(color, left):
     pygame.image.save(piece_png, title)
 
 def roll_die():
-    print(choice(['whale', 'shark', 'serpent']))
+    return choice(['whale', 'shark', 'serpent'])
 
 class GamePiece:
     def __init__(self, color, value, png, x, y):

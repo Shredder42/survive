@@ -5,6 +5,7 @@ from tiles import Island, Ocean, Tile
 from game_pieces import GamePiece, roll_die, create_game_pieces
 from animals import Whale, Shark, Serpent
 from button import Button
+from boat import Boat
 
 pygame.init()
 pygame.font.init()
@@ -57,6 +58,8 @@ yellow_pieces = make_pieces('yellow', 'yellow_piece.png', 1200, 150)
 blue_pieces = make_pieces('blue', 'blue_piece.png', 1200, 250)
 green_pieces = make_pieces('green', 'green_piece.png', 1200, 350)
 
+
+boat1 = Boat((50, 50))
 # print(red_pieces)
 # for x in red_pieces:
 #     print(x.rect)
@@ -209,7 +212,7 @@ def main():
         # draw_tile(screen, 6, math.pi / 6, 0, 0, 50, RED)
 
         # for test_whale in whale_list:
-
+        boat1.draw(screen)
 
         ocean_rects = []
         ocean_drawn_tiles = []
@@ -321,6 +324,9 @@ def main():
                     print(animal_rect)
                 if not die_rolled:
                     game_piece_idx = determine_moving_piece(game_pieces, pos)
+
+                if boat1.rect.collidepoint((pos)):
+                    boat1.moving = True
                 # red_idx = determine_moving_piece(red_pieces, pos)
                 # yellow_idx = determine_moving_piece(yellow_pieces, pos)
                 # blue_idx = determine_moving_piece(blue_pieces, pos)
@@ -346,6 +352,9 @@ def main():
                 # if red_idx is not None:
                 if not die_rolled:
                     move_piece(game_pieces, game_piece_idx, event)
+
+                if boat1.moving:
+                    boat1.rect.move_ip(event.rel)
                 # move_piece(red_pieces, red_idx, event)
                 # move_piece(yellow_pieces, yellow_idx, event)
                 # move_piece(blue_pieces, blue_idx, event)
@@ -376,6 +385,7 @@ def main():
                 # moving_red_piece = False
                 if not die_rolled:
                     stop_moving_piece(game_pieces, game_piece_idx)
+                boat1.moving = False
                 # stop_moving_piece(red_pieces, red_idx)
                 # stop_moving_piece(yellow_pieces, yellow_idx)
                 # stop_moving_piece(blue_pieces, blue_idx)

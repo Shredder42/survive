@@ -59,7 +59,16 @@ blue_pieces = make_pieces('blue', 'blue_piece.png', 1200, 250)
 green_pieces = make_pieces('green', 'green_piece.png', 1200, 350)
 
 
-boat1 = Boat((50, 50))
+def make_boats(start_x, start_y):
+    boats = []
+    for i in range(8):
+        if i < 4:
+            boats.append(Boat((start_x + 50 * i, start_y)))
+        else:
+            boats.append(Boat((start_x + 50 * (i - 4), start_y + 50)))
+    return boats
+
+boats = make_boats(1125, 500)
 # print(red_pieces)
 # for x in red_pieces:
 #     print(x.rect)
@@ -99,6 +108,10 @@ def draw_pieces(pieces):
     for piece in pieces:
         if piece.alive:
             piece.draw(screen, piece.rect)
+
+def draw_boats(boats):
+    for boat in boats:
+        boat.draw(screen)
 
 # def clicked_pieces(pieces, mouse_position):
 #     moving_piece = False
@@ -170,6 +183,7 @@ def main():
     # moving_green_piece = False
     game_piece_idx = None
     # moving = False
+    boat_idx = None
     run = True
 
     whales = []
@@ -212,7 +226,7 @@ def main():
         # draw_tile(screen, 6, math.pi / 6, 0, 0, 50, RED)
 
         # for test_whale in whale_list:
-        boat1.draw(screen)
+
 
         ocean_rects = []
         ocean_drawn_tiles = []
@@ -237,6 +251,8 @@ def main():
 
         island_tile_rects = zip(island_drawn_tiles, island_rects)
 
+        draw_boats(boats)
+
         draw_pieces(red_pieces)
         draw_pieces(yellow_pieces)
         draw_pieces(blue_pieces)
@@ -250,6 +266,7 @@ def main():
         # if draw_yellow:
             # yellow_piece.draw(screen, yellow_piece.rect)
         # screen.blit(yellow_piece, yellow_rect)
+
 
         button.draw_button(screen)
         show_last_die_result(die_result)
@@ -276,6 +293,8 @@ def main():
                         elif island_tile.backside == 'add shark':
                             sharks.append(Shark((island_tile.coordinates[4][0] + 10, island_tile.coordinates[4][1] - 10)))
                         #     shark.draw(screen)
+                        elif island_tile.backside == 'add boat':
+                            boats.append(Boat((island_tile.coordinates[4][0] + 20, island_tile.coordinates[4][1] - 5)))
 
                 # whale.move(screen, pos)
                 # whale.selected = False
@@ -324,9 +343,8 @@ def main():
                     print(animal_rect)
                 if not die_rolled:
                     game_piece_idx = determine_moving_piece(game_pieces, pos)
+                    boat_idx = determine_moving_piece(boats, pos)
 
-                if boat1.rect.collidepoint((pos)):
-                    boat1.moving = True
                 # red_idx = determine_moving_piece(red_pieces, pos)
                 # yellow_idx = determine_moving_piece(yellow_pieces, pos)
                 # blue_idx = determine_moving_piece(blue_pieces, pos)
@@ -352,9 +370,8 @@ def main():
                 # if red_idx is not None:
                 if not die_rolled:
                     move_piece(game_pieces, game_piece_idx, event)
+                    move_piece(boats, boat_idx, event)
 
-                if boat1.moving:
-                    boat1.rect.move_ip(event.rel)
                 # move_piece(red_pieces, red_idx, event)
                 # move_piece(yellow_pieces, yellow_idx, event)
                 # move_piece(blue_pieces, blue_idx, event)
@@ -385,7 +402,7 @@ def main():
                 # moving_red_piece = False
                 if not die_rolled:
                     stop_moving_piece(game_pieces, game_piece_idx)
-                boat1.moving = False
+                    stop_moving_piece(boats, boat_idx)
                 # stop_moving_piece(red_pieces, red_idx)
                 # stop_moving_piece(yellow_pieces, yellow_idx)
                 # stop_moving_piece(blue_pieces, blue_idx)

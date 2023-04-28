@@ -7,6 +7,26 @@ from animals import Whale, Shark, Serpent
 from button import Button
 from boat import Boat
 
+
+'''
+TO DO list:
+Add safe land
+Connect player pieces to boats and manage movement & in/out of boats
+Handle appropriate selection of pieces on hex (select player, remove tile, move animal)
+Build a "bar" on right side
+Show kept tiles each player has
+Show player value at beginning of game when placing
+* randomized location of player pieces at game start
+
+handle turns
+ask if player wants to use tile (move an animal, move a player, prevent attack)
+
+show points at end of game
+
+'''
+
+
+
 pygame.init()
 pygame.font.init()
 
@@ -32,20 +52,22 @@ button = Button('Roll Die')
 
 def make_pieces(color, png, start_x, start_y):
     pieces = []
+    values = [1, 1, 1, 2, 2, 3, 3, 4, 5, 6]
     for i in range(10):
-        if i < 3:
-            value = 1
-        elif i < 5:
-            value = 2
-        elif i < 7:
-            value = 3
-        elif i == 7:
-            value = 4
-        elif i == 8:
-            value = 5
-        elif i == 9:
-            value = 6
-
+        # if i < 3:
+        #     value = 1
+        # elif i < 5:
+        #     value = 2
+        # elif i < 7:
+        #     value = 3
+        # elif i == 7:
+        #     value = 4
+        # elif i == 8:
+        #     value = 5
+        # elif i == 9:
+        #     value = 6
+        value = choice(values)
+        values.remove(value)
         if i < 5:
             pieces.append(GamePiece(color, value, png, start_x + 30 * i, start_y))
         else:
@@ -343,6 +365,7 @@ def main():
                     print(animal_rect)
                 if not die_rolled:
                     game_piece_idx = determine_moving_piece(game_pieces, pos)
+                    print(game_pieces[game_piece_idx].value)
                     boat_idx = determine_moving_piece(boats, pos)
 
                 # red_idx = determine_moving_piece(red_pieces, pos)
